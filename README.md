@@ -1,7 +1,23 @@
 
 
 
-# H2 haproxy configuration. 
+# installation
+
+be sure this module is installed. It it not yet pip activated. It means coping the files
+to
+
+/path/to/letsencrypt/venv/lib/python2.7/site-packages/letsencrypt_haproxy
+/path/to/letsencrypt/venv/lib/python2.7/site-packages/letsencrypt_haproxy-0.0.1.dist-info/
+
+afterwards, source the letsencrypt enviroment and get a certificate
+
+```
+source venv/bin/activate
+letsencrypt --authenticator letsencrypt-haproxy:auth --installer  letsencrypt-haproxy:installer  -d domainname.com
+```
+
+
+# haproxy configuration. 
 
 
 Below is a snippet of haproxy configuration. 
