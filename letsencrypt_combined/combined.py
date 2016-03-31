@@ -38,8 +38,13 @@ class Installer(common.Plugin):
 
     def deploy_cert(self, domain, cert_path, key_path, chain_path, fullchain_path): # pylint: disable=missing-docstring
         path = self.conf("path")
+        logger.warning(path)
+        path = os.path.normpath(path)
+        logger.warning(path)
         raise ValueError("path must be a directory", path) if not os.path.isdir(path)
-        combined = open("%s.pem" % os.path.join(path, domain), "w")
+        path = os.path.join(path, domain)
+        logger.warning(path)
+        combined = open("%s.pem" % path, "w")
         # Write key, cert & chain in one file
         for path in [key_path, cert_path, chain_path]:
             path_file = open(path, "r")
