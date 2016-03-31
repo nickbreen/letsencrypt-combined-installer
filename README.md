@@ -3,7 +3,10 @@
 Get and copy/link the files to the letsencrypt python virtual environment.
 ```
 git clone https://github.com/nickbreen/letsencrypt-combined-installer /opt/letsencrypt-combined-installer
-ln -s /opt/letsencrypt-combined-installer/combined.py /opt/letsencrypt/venv/lib/python2.7/site-packages/
+# Enter the VE
+source /opt/letsencrypt/venv/bin/activate
+cd /opt/letsencrypt-combined-installer
+python setup.py install
 ```
 
 Specify the installer and optionally the path to output the combined certificates to.
