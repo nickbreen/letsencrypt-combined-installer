@@ -27,7 +27,8 @@ class Installer(common.Plugin):
     def __init__(self, *args, **kwargs):
         super(Installer, self).__init__(*args, **kwargs)
 
-    def prepare(self):  # pylint: disable=missing-docstring,no-self-use
+    def prepare(self):  # pylint: disable=missing-docstring
+        logger.wanring(self.config)
         path = self.conf("path")
         logger.warning(path)
         path = os.path.normpath(path)
