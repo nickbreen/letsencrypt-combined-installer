@@ -1,4 +1,5 @@
-"""HAproxy  Let's Encrypt installer plugin."""
+"""Let's Encrypt Combined Certificate Installer plugin."""
+
 import os
 import logging
 
@@ -8,19 +9,20 @@ import zope.interface
 from letsencrypt import interfaces
 from letsencrypt.plugins import common
 
-
 logger = logging.getLogger(__name__)
 
 class Installer(common.Plugin):
+    """Combined Certificate Installer"""
+
     zope.interface.implements(interfaces.IInstaller)
     zope.interface.classProvides(interfaces.IPluginFactory)
 
-    description = "Haproxy Installer"
+    description = "Combined Certificate Installer"
 
     @classmethod
     def add_parser_arguments(cls, add):
-        add("combined-path", default=os.path.dirname("/certs"),
-            help="Path to install the combined certificate to.")
+        add("path", default=os.path.dirname("/certs"),
+            help="Path to install combined certificates to.")
 
     def __init__(self, *args, **kwargs):
         super(Installer, self).__init__(*args, **kwargs)
@@ -34,8 +36,8 @@ class Installer(common.Plugin):
     def get_all_names(self):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
 
-    def deploy_cert(self, domain, cert_path, key_path, chain_path, fullchain_path):
-        combined = open("%s/%s.pem" % os.path.join(self.conf("combined-path"), domain), "w")
+    def deploy_cert(self, domain, cert_path, key_path, chain_path, fullchain_path): # pylint: disable=missing-docstring
+        combined = open("%s.pem" % os.path.join(self.conf("combined-path"), domain), "w")
         # Write key, cert & chain in one file
         for path in [key_path, cert_path, chain_path]:
             path_file = open(path, "r")
