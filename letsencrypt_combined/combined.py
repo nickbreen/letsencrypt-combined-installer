@@ -41,7 +41,8 @@ class Installer(common.Plugin):
         logger.warning(path)
         path = os.path.normpath(path)
         logger.warning(path)
-        raise ValueError("path must be a directory", path) if not os.path.isdir(path)
+        if not os.path.isdir(path):
+            raise ValueError("path must be a directory", path) 
         path = os.path.join(path, domain)
         logger.warning(path)
         combined = open("%s.pem" % path, "w")
