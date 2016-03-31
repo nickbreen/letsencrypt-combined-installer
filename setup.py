@@ -2,7 +2,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 setup(
-    name='combined',
+    name='letsencrypt-combined',
     description="Installed combined certificates to a directory.",
     url='https://github.com/nickbreen/letsencrypt-combined-installer',
     author="Nick Breen",

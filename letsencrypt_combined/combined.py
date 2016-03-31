@@ -21,20 +21,18 @@ class Installer(common.Plugin):
 
     @classmethod
     def add_parser_arguments(cls, add):
-        add("path", default=os.path.normpath("/certs"),
+        add("path", default=os.path.normpath("/certs/"),
             help="Path to install combined certificates to.")
 
     def __init__(self, *args, **kwargs):
         super(Installer, self).__init__(*args, **kwargs)
 
     def prepare(self):  # pylint: disable=missing-docstring
-        logger.warning(self.config)
         path = self.conf("path")
-        logger.warning(path)
-        path = os.path.normpath(path)
-        logger.warning(path)
+        path = os.path.realpath(path)
+        logger.debug("Combined directory: %s" % (path))
         if not os.path.isdir(path):
-            raise ValueError("path must be a directory", path)
+            raise ValueError("Path must be a directory", path)
         self.path = path
 
     def more_info(self):  # pylint: disable=missing-docstring,no-self-use
@@ -44,15 +42,20 @@ class Installer(common.Plugin):
         pass  # pragma: no cover
 
     def deploy_cert(self, domain, cert_path, key_path, chain_path, fullchain_path): # pylint: disable=missing-docstring
-        path = os.path.join(self.path, domain)
-        logger.warning(path)
-        combined = open("%s.pem" % path, "w")
+        path = "%s.pem" % (os.path.join(self.path, domain))
+        logger.debug("Combined file: %s" % (path))
+        combined = open(path, "w")
         # Write key, cert & chain in one file
-        for path in [key_path, cert_path, chain_path]:
-            path_file = open(path, "r")
-            combined.write(path_file.read())
-            path_file.close()
+        for x_path in [key_path, cert_path, chain_path]:
+            if (x_path and os.path.isfile(x_path)):
+                logger.debug("Concatenating file: %s" % (x_path))
+                x_file = open(x_path, "r")
+                combined.write(x_file.read())
+                x_file.close()
+            elif (x_path):
+                raise ValueError("Must exist and be a file", x_path)
         combined.close()
+        logger.info("Wrote combined file to: %s" % (path))
 
     def enhance(self, domain, enhancement, options=None):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
