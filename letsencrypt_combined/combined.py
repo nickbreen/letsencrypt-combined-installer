@@ -28,7 +28,13 @@ class Installer(common.Plugin):
         super(Installer, self).__init__(*args, **kwargs)
 
     def prepare(self):  # pylint: disable=missing-docstring,no-self-use
-        pass  # pragma: no cover
+        path = self.conf("path")
+        logger.warning(path)
+        path = os.path.normpath(path)
+        logger.warning(path)
+        if not os.path.isdir(path):
+            raise ValueError("path must be a directory", path)
+        self.path = path
 
     def more_info(self):  # pylint: disable=missing-docstring,no-self-use
         return ""
@@ -37,13 +43,7 @@ class Installer(common.Plugin):
         pass  # pragma: no cover
 
     def deploy_cert(self, domain, cert_path, key_path, chain_path, fullchain_path): # pylint: disable=missing-docstring
-        path = self.conf("path")
-        logger.warning(path)
-        path = os.path.normpath(path)
-        logger.warning(path)
-        if not os.path.isdir(path):
-            raise ValueError("path must be a directory", path) 
-        path = os.path.join(path, domain)
+        path = os.path.join(self.path, domain)
         logger.warning(path)
         combined = open("%s.pem" % path, "w")
         # Write key, cert & chain in one file
