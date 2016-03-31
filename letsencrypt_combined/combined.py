@@ -21,7 +21,7 @@ class Installer(common.Plugin):
 
     @classmethod
     def add_parser_arguments(cls, add):
-        add("path", default=os.path.dirname("/certs"),
+        add("path", default=os.path.normpath("/certs"),
             help="Path to install combined certificates to.")
 
     def __init__(self, *args, **kwargs):
@@ -37,7 +37,9 @@ class Installer(common.Plugin):
         pass  # pragma: no cover
 
     def deploy_cert(self, domain, cert_path, key_path, chain_path, fullchain_path): # pylint: disable=missing-docstring
-        combined = open("%s.pem" % os.path.join(self.conf("path"), domain), "w")
+        path = self.conf("path")
+        raise ValueError("path must be a directory", path) if not os.path.isdir(path)
+        combined = open("%s.pem" % os.path.join(path, domain), "w")
         # Write key, cert & chain in one file
         for path in [key_path, cert_path, chain_path]:
             path_file = open(path, "r")
