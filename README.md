@@ -21,3 +21,19 @@ letsencrypt \
   --installer letsencrypt-combined:combined --letsencrypt-combined:combined-path /certs \
   --domains example.com
 ```
+
+
+# Self Signed Certificates
+
+Self-signed certificates can also be installed with this tool.
+
+```
+# Generate a self-signed certificate.
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 90 -nodes -subj '/CN=example.com/O=Test/C=NZ'
+
+# Install it
+le --config $XDG_CONFIG_HOME/letsencrypt/install.ini install \
+    --cert-path cert.pem \
+    --key-path key.pem \
+    --domains example.com \
+```
