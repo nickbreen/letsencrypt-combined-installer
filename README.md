@@ -1,20 +1,23 @@
-# installation
+# Installation
 
-Get and copy/link the files to the letsencrypt python virtual environment.
+Install (in to the letsencrypt python virtual environment). Assuming letsencrypt is installed to `/opt/letsencrypt`.
+
 ```
-git clone https://github.com/nickbreen/letsencrypt-combined-installer /opt/letsencrypt-combined-installer
-# Enter the VE
+URL=$(curl -LsSf https://api.github.com/repos/nickbreen/letsencrypt-combined-installer/releases/latest | jq .tarball_url)
+curl -LsSf $URL | tar zx -C /opt
 source /opt/letsencrypt/venv/bin/activate
-cd /opt/letsencrypt-combined-installer
+cd /opt/letsencrypt-combined-installer-*
 python setup.py install
 ```
+
+# Usage
 
 Specify the installer and optionally the path to output the combined certificates to.
 
 ```
-source venv/bin/activate
+source /opt/letsencrypt/venv/bin/activate
 letsencrypt \
   --authenticator webroot -webroot-path /var/www/html \
-  --installer combined --combined-path /certs \
-  --domains www.example.com,example.com
+  --installer letsencrypt-combined:combined --letsencrypt-combined:combined-path /certs \
+  --domains example.com
 ```
