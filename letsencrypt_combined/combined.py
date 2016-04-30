@@ -46,7 +46,7 @@ class Installer(common.Plugin):
         logger.debug("Combined file: %s" % (path))
         combined = open(path, "w")
         # Write key, cert & chain in one file
-        for x_path in [key_path, cert_path, chain_path]:
+        for x_path in [key_path, cert_path, fullchain_path]:
             if (x_path and os.path.isfile(x_path)):
                 logger.debug("Concatenating file: %s" % (x_path))
                 x_file = open(x_path, "r")

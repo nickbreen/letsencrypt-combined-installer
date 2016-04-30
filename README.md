@@ -35,5 +35,5 @@ openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 90 -nodes
 le --config $XDG_CONFIG_HOME/letsencrypt/install.ini install \
     --cert-path cert.pem \
     --key-path key.pem \
-    --domains example.com \
+    --domains example.com
 ```
