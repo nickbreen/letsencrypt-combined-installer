@@ -17,7 +17,7 @@ Specify the installer and optionally the path to output the combined certificate
 ```
 source /opt/letsencrypt/venv/bin/activate
 letsencrypt \
-  --authenticator webroot -webroot-path /var/www/html \
+  --authenticator webroot -webroot-path /var/www \
   --installer letsencrypt-combined:combined --letsencrypt-combined:combined-path /certs \
   --domains example.com
 ```
